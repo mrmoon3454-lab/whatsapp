@@ -1,11 +1,14 @@
 // index.js — MRMOON22 WhatsApp Bot (Baileys + Static Pair Code)
-import makeWASocket, {
+import * as baileys from '@whiskeysockets/baileys';
+const makeWASocket = baileys.default || baileys.makeWASocket;
+const {
   useMultiFileAuthState,
   DisconnectReason,
   fetchLatestBaileysVersion,
   makeCacheableSignalKeyStore,
   jidNormalizedUser,
-} from '@whiskeysockets/baileys';
+} = baileys;
+
 import { Boom } from '@hapi/boom';
 import pino from 'pino';
 import http from 'http';
@@ -18,7 +21,7 @@ let sock = null;
 let isStarting = false;
 
 // ═════════════════════════════════════════════════════
-// 🌐 Health Check Server (Railway/Render/Koyeb-এর জন্য)
+// 🌐 Health Check Server (Render/Railway-এর জন্য)
 // ═════════════════════════════════════════════════════
 http
   .createServer((req, res) => {
@@ -73,7 +76,7 @@ async function startBot() {
         try {
           console.log('\n⏳ Static pairing code চাওয়া হচ্ছে...');
 
-          // 👇 ২য় প্যারামিটার = STATIC code
+          // ২য় প্যারামিটার = STATIC code (MRMOON22)
           const code = await sock.requestPairingCode(
             config.phoneNumber,
             config.pairCode
