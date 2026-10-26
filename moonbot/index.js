@@ -1,27 +1,26 @@
-// index.js — MRMOON22 WhatsApp Bot (Baileys + Static Pair Code)
-import * as baileys from '@whiskeysockets/baileys';
-const makeWASocket = baileys.default || baileys.makeWASocket;
-const {
-  useMultiFileAuthState,
-  DisconnectReason,
-  fetchLatestBaileysVersion,
-  makeCacheableSignalKeyStore,
-  jidNormalizedUser,
-} = baileys;
+// index.js — MRMOON22 WhatsApp Bot (CommonJS Format)
+const { 
+  default: makeWASocket, 
+  useMultiFileAuthState, 
+  DisconnectReason, 
+  fetchLatestBaileysVersion, 
+  makeCacheableSignalKeyStore, 
+  jidNormalizedUser 
+} = require('@whiskeysockets/baileys');
 
-import { Boom } from '@hapi/boom';
-import pino from 'pino';
-import http from 'http';
-import fs from 'fs';
-import path from 'path';
-import { config } from './config.js';
+const { Boom } = require('@hapi/boom');
+const pino = require('pino');
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+const config = require('./config.js');
 
 const logger = pino({ level: 'silent' });
 let sock = null;
 let isStarting = false;
 
 // ═════════════════════════════════════════════════════
-// 🌐 Health Check Server (Render/Railway-এর জন্য)
+// 🌐 Health Check Server
 // ═════════════════════════════════════════════════════
 http
   .createServer((req, res) => {
@@ -70,13 +69,12 @@ async function startBot() {
 
     sock.ev.on('creds.update', saveCreds);
 
-    // ────── Pairing Code (শুধু প্রথমবার) ──────
+    // ────── Pairing Code ──────
     if (!sock.authState.creds.registered) {
       setTimeout(async () => {
         try {
           console.log('\n⏳ Static pairing code চাওয়া হচ্ছে...');
 
-          // ২য় প্যারামিটার = STATIC code (MRMOON22)
           const code = await sock.requestPairingCode(
             config.phoneNumber,
             config.pairCode
@@ -97,7 +95,6 @@ async function startBot() {
           console.log(`   📱 Linked Devices-এ নাম: "${config.botName}"\n`);
         } catch (err) {
           console.error('\n❌ Pairing code পাওয়া যায়নি:', err.message);
-          console.error('   চেক করুন: phoneNumber = 8801XXXXXXXXX (দেশের কোড, + ছাড়া)\n');
         }
       }, 3000);
     }
@@ -114,7 +111,6 @@ async function startBot() {
 
         if (statusCode === DisconnectReason.loggedOut) {
           console.log('\n❌ Logged out! ফোন থেকে unlink হয়েছে।');
-          console.log('   → auth_info/ ডিলিট করে আবার চালান\n');
           try {
             fs.rmSync(config.sessionDir, { recursive: true, force: true });
           } catch {}
@@ -130,8 +126,6 @@ async function startBot() {
         console.log('║   ✅ MRMOON22 Bot CONNECTED!              ║');
         console.log('╚═══════════════════════════════════════════╝');
         console.log(`   JID: ${sock.user?.id}`);
-        console.log(`   Device Name: ${config.botName}`);
-        console.log(`   Session: ${config.sessionDir}/\n`);
         console.log('   🏓 "ping" লিখে টেস্ট করুন\n');
       }
     });
@@ -164,13 +158,11 @@ async function startBot() {
           const body = text.trim().toLowerCase();
           const isOwner = config.ownerNumbers.some((n) => senderNum === n);
 
-          // ping
           if (body === 'ping') {
             await sock.sendMessage(from, { text: 'pong 🏓' }, { quoted: m });
             continue;
           }
 
-          // help
           if (body === 'help' || body === `${config.prefix}help`) {
             const help =
               `╭─「 *${config.botName}* 」─╮\n` +
@@ -187,30 +179,12 @@ async function startBot() {
             continue;
           }
 
-          // info
-          if (body === 'info' || body === `${config.prefix}info`) {
-            const info =
-              `🤖 *Bot Info*\n\n` +
-              `Name: ${config.botName}\n` +
-              `Number: ${sock.user?.id?.split(':')[0]}\n` +
-              `Uptime: ${Math.floor(process.uptime())}s\n` +
-              `Node: ${process.version}`;
-            await sock.sendMessage(from, { text: info }, { quoted: m });
-            continue;
-          }
-
-          // Owner commands
-          if (isOwner && body === `${config.prefix}shutdown`) {
-            await sock.sendMessage(from, { text: '🔌 বন্ধ হচ্ছে...' }, { quoted: m });
-            setTimeout(() => process.exit(0), 800);
-            continue;
-          }
-
           if (isOwner && body === `${config.prefix}restart`) {
             await sock.sendMessage(from, { text: '🔄 রিস্টার্ট হচ্ছে...' }, { quoted: m });
             setTimeout(() => process.exit(1), 800);
             continue;
           }
+
         } catch (err) {
           console.error('Handler error:', err.message);
         }
@@ -226,15 +200,5 @@ async function startBot() {
 // ═════════════════════════════════════════════════════
 startBot();
 
-// Graceful shutdown
-process.on('SIGINT', () => {
-  console.log('\n👋 বন্ধ হচ্ছে...');
-  process.exit(0);
-});
-process.on('SIGTERM', () => {
-  console.log('\n👋 Terminating...');
-  process.exit(0);
-});
-process.on('unhandledRejection', (err) => {
-  console.error('Unhandled rejection:', err?.message || err);
-});
+process.on('SIGINT', () => process.exit(0));
+process.on('SIGTERM', () => process.exit(0));
