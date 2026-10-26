@@ -1,20 +1,14 @@
 {
   "name": "whatsapp-chat-dashboard",
   "version": "1.0.0",
-  "private": true,
-  "type": "module",
-  "description": "Testing dashboard for an account you own, using Baileys",
+  "description": "WhatsApp Chat Dashboard",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
-  "engines": {
-    "node": ">=20"
-  },
   "dependencies": {
-    "@whiskeysockets/baileys": "latest",
-    "express": "^5.1.0",
-    "pino": "^9.7.0",
-    "qrcode": "^1.5.4",
+    "@whiskeysockets/baileys": "^6.7.18",
+    "express": "^4.21.2",
     "socket.io": "^4.8.1"
   }
 }
