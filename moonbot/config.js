@@ -1,10 +1,10 @@
 // config.js — সব সেটিং এখানে
 module.exports = {
   // ⚠️ আপনার বটের WhatsApp নম্বর (দেশের কোডসহ, + বা 0 ছাড়া)
-  phoneNumber: '8801712345678',
+  phoneNumber: '8801603460552',
 
   // ⚠️ Owner নম্বর (owner কমান্ডের জন্য)
-  ownerNumbers: ['8801712345678'],
+  ownerNumbers: ['8801603460552'],
 
   // 🔒 STATIC pairing code
   pairCode: 'MRMOON22',
