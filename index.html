@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#075e54">
+  <title>Chat Dashboard</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="app">
+    <aside class="sidebar">
+      <header class="side-header">
+        <div class="avatar logo">W</div>
+        <div class="side-title"><h1>Chats</h1><p>Personal testing dashboard</p></div>
+        <span id="connectionDot" class="connection-dot"></span>
+      </header>
+
+      <div class="connection-card">
+        <div><strong id="connectionText">Starting…</strong><small id="connectionHint">Checking WhatsApp session</small></div>
+        <button id="showQrButton" class="secondary" type="button">Link device</button>
+      </div>
+
+      <label class="search">
+        <span aria-hidden="true">⌕</span>
+        <input id="searchInput" type="search" placeholder="Search chats or contacts" autocomplete="off">
+      </label>
+
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-tab="chats" type="button">Chats</button>
+        <button class="tab" data-tab="contacts" type="button">Contacts</button>
+      </div>
+
+      <div id="chatList" class="list" aria-label="Chats"></div>
+      <div id="contactList" class="list" aria-label="Contacts" hidden></div>
+      <div id="emptyList" class="empty-list">Your chats will appear here after messages are synced or received.</div>
+    </aside>
+
+    <section class="conversation">
+      <header class="chat-header">
+        <div class="avatar" id="chatAvatar">W</div>
+        <div class="chat-heading"><h2 id="chatTitle">Choose a chat</h2><p id="chatSubtitle">Select a conversation from the left</p></div>
+      </header>
+
+      <div id="qrOverlay" class="qr-overlay" hidden>
+        <div class="qr-card">
+          <button id="closeQrButton" class="close-button" type="button" aria-label="Close QR panel">×</button>
+          <h2>Link your WhatsApp</h2>
+          <p>On your phone: WhatsApp → Linked devices → Link a device. Scan this QR code only if you initiated this session.</p>
+          <div class="qr-frame"><img id="qrImage" alt="WhatsApp linking QR code" hidden><span id="qrPlaceholder">Waiting for QR code…</span></div>
+          <small>Keep this QR code and session private.</small>
+        </div>
+      </div>
+
+      <div id="welcome" class="welcome">
+        <div class="welcome-icon">✉</div>
+        <h2>Your chats, in one place</h2>
+        <p>Connect your own WhatsApp account, then choose a chat to view messages.</p>
+      </div>
+
+      <div id="messageList" class="message-list" aria-live="polite" hidden></div>
+
+      <form id="sendForm" class="composer" hidden>
+        <input id="messageInput" type="text" maxlength="4000" placeholder="Type a message" autocomplete="off" required>
+        <button id="sendButton" type="submit" aria-label="Send message">Send</button>
+      </form>
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    </section>
+  </main>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
