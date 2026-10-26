@@ -1,8 +1,0 @@
-node_modules/
-auth_info/
-auth_info_baileys/
-*.session
-*.log
-.env
-.DS_Store
-npm-debug.log*
