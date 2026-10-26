@@ -1,12 +1,9 @@
 // config.js — সব সেটিং এখানে
 module.exports = {
-  // ⚠️ আপনার বটের WhatsApp নম্বর (দেশের কোডসহ, + বা 0 ছাড়া)
-  phoneNumber: '8801603460552',
-
   // ⚠️ Owner নম্বর (owner কমান্ডের জন্য)
-  ownerNumbers: ['8801603460552'],
+  ownerNumbers: ['8801712345678'],
 
-  // 🔒 STATIC pairing code
+  // 🔒 STATIC pairing code (ঐচ্ছিক)
   pairCode: 'MRMOON22',
 
   // 📱 Linked Devices-এ যে নাম দেখাবে
@@ -18,6 +15,6 @@ module.exports = {
   // 🎯 কমান্ড প্রিফিক্স
   prefix: '.',
 
-  // 🌐 Health check port
+  // 🌐 Health check এবং UI port
   port: process.env.PORT || 3000,
 };
